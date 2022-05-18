@@ -10,8 +10,11 @@ Vue.use(VueRouter)
 
 import {routes} from './routes'
 
-import  validateuser from './components/helper/validateuser';
-window.validateruser = validateuser
+import User from './components/helper/User';
+window.User = User
+
+import Notification from './components/helper/Notification';
+window.Notification = Notification
 
 import Swal from 'sweetalert2'
 window.Swal = Swal

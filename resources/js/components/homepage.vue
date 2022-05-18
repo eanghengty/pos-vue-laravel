@@ -204,10 +204,10 @@
 
 </template>
 <script>
-import validateuser from './helper/validateuser'
+import User from './helper/User'
 export default{
   created(){
-    if(!validateuser.loggedin()){
+    if(!User.loggedIn()){
       this.$router.push({name:'login'})
     }
   }

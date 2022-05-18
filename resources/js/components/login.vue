@@ -53,11 +53,11 @@
   </div>
 </template>
 <script type="text/javascript">
-import validateuser from './helper/validateuser'
+import User from './helper/User'
   export default{
     
 created(){
-  if(validateuser.loggedin()){
+  if(User.loggedIn()){
     this.$router.push({name:'homepage'})
   }
 },
@@ -69,7 +69,6 @@ data(){
         password:null
       },
       errors:{
-
       }
     }
   },
@@ -78,7 +77,7 @@ data(){
       axios.post('api/auth/login',this.form)
       .then(res => {
         
-        validateuser.responseafterlogin(res)
+        User.responseAfterLogin(res)
          Toast.fire({
         icon: 'success',
         title: 'Signed in successfully'
@@ -88,7 +87,7 @@ data(){
       .catch(error=>this.errors = error.response.data.errors)
       .catch(
         Toast.fire({
-          icon:'danger',
+          icon:'warning',
           title:'Error invalid email or password'
         })
       )

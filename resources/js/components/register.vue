@@ -15,6 +15,7 @@
                       <label>Name</label>
                       <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter  Name"
                       v-model="form.name">
+                      
                     </div>
                     
                     <div class="form-group">
@@ -54,12 +55,41 @@
   </div>
 </template>
 <script>
-import validateuser from './helper/validateuser'
+import User from './helper/User'
 export default{
   created(){
-    if(validateuser.loggedin()){
+    if(User.loggedIn()){
       this.$router.push({name:'homepage'})
     }
+  },
+  data(){
+  return{
+    form:{
+      email:null,
+      password:null,
+      name:null,
+      confirm_password:null
+    },
+    errors:{
+
+    }
+  }
+  
+  },
+  methods:{
+    signup(){
+      axios.post('/api/auth/signup',this.form)
+      .then(res=>{
+      User.responseAfterLogin(res)
+      Toast.fire({
+        icon:'success',
+        title:"signed up successfully"
+      })
+      this.$router.push({name:'homepage'})
+      })
+      
+
+          }
   }
 }
 </script>

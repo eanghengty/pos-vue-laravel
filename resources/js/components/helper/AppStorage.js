@@ -1,14 +1,14 @@
-class storage{
+class AppStorage{
 
-    Token(token){
+    storeToken(token){
         localStorage.setItem('token',token)
     }
-    User(user){
+    storeUser(user){
         localStorage.setItem('user',user)
     }
-    Store(token,user){
-        this.Token(token)
-        this.User(user)
+    store(token,user){
+        this.storeToken(token)
+        this.storeUser(user)
     }
 
     clear(){
@@ -16,11 +16,11 @@ class storage{
         localStorage.removeItem('user')
     }
     
-    gettoken(){
+    getToken(){
         localStorage.getItem(token)
     }
-    getuser(){
+    getUser(){
         localStorage.getItem(user)
     }
 }
-export default storage = new storage(); 
+export default AppStorage = new AppStorage(); 
