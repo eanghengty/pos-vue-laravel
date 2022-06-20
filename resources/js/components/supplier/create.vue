@@ -8,20 +8,20 @@
               <div class="col-lg-12">
                 <div class="login-form">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Add Employee</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Add Supplier</h1>
                   </div>
                   <form @submit.prevent="employeeInsert" enctype="multipart/form-data">
                     <div class="form-group">
                       <label>Name</label>
                       <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter  Name" v-model="form.name">
-                     
+                      
                     </div>
                     
                     <div class="form-group">
                       <label>Email</label>
                       <input type="email" class="form-control" id="exampleInputEmail" aria-describedby="emailHelp"
                         placeholder="Enter Email Address" v-model="form.email">
-                       
+                      
                     </div>
                     <div class="form-group">
                       <label>Phone</label>
@@ -30,35 +30,23 @@
                       
                       
                     </div>
-                    <div class="form-group">
-                      <label>Salary</label>
-                      <input type="text" class="form-control" id="exampleInputPasswordRepeat"
-                        placeholder="Enter salary" v-model="form.salary">
-                   
-                    </div>
                     
                     <div class="form-group">
-                      <label>Joining Date</label>
-                      <input type="date" class="form-control" id="exampleInputPasswordRepeat"
-                        placeholder="Enter joining date" v-model="form.joining_date">
-                       
+                      <label  for='myfile'>Shopname</label>
+                      <input v-model="form.shopname" type="text" placeholder="Enter shopname"/>
+        
                     </div>
-                    <div class="form-group">
-                      <label>NID</label>
-                      <input type="text" class="form-control" id="exampleInputPasswordRepeat"
-                        placeholder="Enter NID" v-model="form.nid">
-                        
-                    </div>
+                   
                     <div class="form-group">
                       <label>Address</label>
                       <input type="text" class="form-control" id="exampleInputPasswordRepeat"
                         placeholder="Enter address" v-model="form.address">
-                        
+               
                     </div>
                     <div class="form-group">
                       <label  for='myfile'>Photo</label>
                       <input type="file"  id="myfile" placeholder="select image" @change="onFileSelected">
-                     
+                      
                     </div>
                     <div class="md-col-6">
                     <img :src="form.photo" style="height:40px;width:40px">
@@ -94,13 +82,13 @@ export default{
   return{
     form:{
       email:null,
-      salary:null,
-      name:null,
       phone:null,
-      nid:null,
+      name:null,
       address:null,
       photo:null,
-      joining_date:null 
+      shopname:null,
+      
+      
     },
     errors:{
 
@@ -110,9 +98,9 @@ export default{
   },
   methods:{
     employeeInsert(){
-      axios.post('/api/employee',this.form)
+      axios.post('/api/supplier',this.form)
       .then(()=>{
-        this.$router.push({name: 'employee'})
+        this.$router.push({name: 'supplier'})
         Notification.success()
       })
       .catch(error=>this.errors=error.response.data.errors);

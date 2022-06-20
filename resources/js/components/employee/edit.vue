@@ -8,9 +8,9 @@
               <div class="col-lg-12">
                 <div class="login-form">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Add Employee</h1>
+                    <h1 class="h4 text-gray-900 mb-4">Edit employee</h1>
                   </div>
-                  <form @submit.prevent="employeeInsert" enctype="multipart/form-data">
+                  <form @submit.prevent="employeeUpdate" enctype="multipart/form-data">
                     <div class="form-group">
                       <label>Name</label>
                       <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter  Name" v-model="form.name">
@@ -64,7 +64,7 @@
                     <img :src="form.photo" style="height:40px;width:40px">
                     </div>
                     <div class="form-group">
-                      <button type="submit" class="btn btn-primary btn-block">Create</button>
+                      <button type="submit" class="btn btn-primary btn-block">Change</button>
                     </div>
 
                     
@@ -82,6 +82,7 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
 import User from '../helper/User'
 export default{
   created(){
@@ -93,14 +94,15 @@ export default{
   data(){
   return{
     form:{
-      email:null,
-      salary:null,
-      name:null,
-      phone:null,
-      nid:null,
-      address:null,
-      photo:null,
-      joining_date:null 
+      email:'',
+      salary:'',
+      name:'',
+      phone:'',
+      nid:'',
+      address:'',
+      photo:'',
+      newphoto:'',
+      joining_date:'' 
     },
     errors:{
 
@@ -108,15 +110,13 @@ export default{
   }
   
   },
+  created(){
+    let id = this.$route.params.id
+    axios.get('/api/employee/' + id)
+    .then(({data}) =>(this.form = data))
+    .catch(console.log('error'))
+  },
   methods:{
-    employeeInsert(){
-      axios.post('/api/employee',this.form)
-      .then(()=>{
-        this.$router.push({name: 'employee'})
-        Notification.success()
-      })
-      .catch(error=>this.errors=error.response.data.errors);
-    },
     onFileSelected(event ){
      let file = event.target.files[0];
      if(file.size > 1048770){
@@ -129,6 +129,15 @@ export default{
      } 
      reader.readAsDataURL(file);
      }
+    },
+    employeeUpdate(){
+     let id = this.$route.params.id
+     axios.patch('/api/employee/'+id)
+     .then(()=>{
+        this.$router.push({name:'employee'})
+        Notification.success()
+     })
+     .catch(console.log('error'))
     }
   
   

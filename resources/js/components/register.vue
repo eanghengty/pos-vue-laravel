@@ -87,7 +87,9 @@ export default{
       })
       this.$router.push({name:'homepage'})
       })
+      .catch(error=>this.errors = error.response.data.errors)
       
+       
 
           }
   }

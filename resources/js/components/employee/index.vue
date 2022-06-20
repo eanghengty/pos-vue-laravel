@@ -10,6 +10,10 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">All Employees</h1>
                   </div>
+                  <div >
+                    <input class="form-control m-3" v-model="searchTerm" style="width: 300px;" type="text" placeholder="search employee">
+
+                  </div>
                   <div class="col-lg-12 mb-4">
                     <div class="card">
                  <div class="card">
@@ -26,18 +30,19 @@
                              <th>Phone</th>
                              <th>Salary</th>
                              <th>Joining Date</th>
+                             <th></th>
                              <th>Action</th>
                            </tr>
                          </thead>
                           <tbody>
-                            <tr v-for="employee in employees" :key="employee.id"> 
+                            <tr v-for="employee in filtersearch" :key="employee.id"> 
                             <td>{{employee.name}}</td>
                             <td><img :src="employee.photo" id="em_photo"></td>
                             <td>{{employee.phone}}</td>
                             <td>{{employee.salary}}</td>
                             <td>{{employee.joining_date}}</td>
-                            <td><a href="#" class="btn btn-primary btn-sm">Edit</a></td>
-                            <td><a href="#" class="btn btn-danger btn-sm">Delete</a></td>
+                            <td><router-link  :to="{name: 'edit-employee', params:{id:employee.id}}" class="btn btn-primary btn-sm">Edit</router-link></td>
+                            <td><a @click="deleteEmployee(employee.id)"  class="btn btn-danger btn-sm">Delete</a></td>
 
                             </tr>
                           </tbody>
@@ -72,6 +77,14 @@ export default{
 
     return{
       employees:[],
+      searchTerm:''
+    }
+  },
+  computed:{
+    filtersearch(){
+      return this.employees.filter(employee =>{
+        return employee.name.match(this.searchTerm)
+      })
     }
   },
   methods:{
@@ -79,6 +92,30 @@ export default{
       axios.get('/api/employee')
       .then(({data})=>(this.employees=data))
       .catch()
+    },
+    deleteEmployee(id){
+      Swal.fire({
+    title: 'Are you sure?',
+  text: "You won't be able to revert this!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+  if (result.value) {
+    axios.delete('/api/employee/'+id)
+    .then(()=>{this.employees=this.employees.filter(employee=>{return employee.id != id})})
+    .catch(()=>{
+      this.$router.push({name:'employee'})
+    })
+    Swal.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success'
+    )
+  }
+})
     }
   },
   created(){

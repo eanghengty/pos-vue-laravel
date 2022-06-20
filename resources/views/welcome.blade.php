@@ -10,9 +10,9 @@
 
   <title>inventory</title>
 
-  <link href={{asset("server/vendor/fontawesome-free/css/all.min.css")}} rel="stylesheet" type="text/css">
-  <link href={{asset("server/vendor/bootstrap/css/bootstrap.min.css")}} rel="stylesheet" type="text/css">
-  <link href={{asset("server/css/style.min.css")}} rel="stylesheet">
+  <link href='{{asset("server/vendor/fontawesome-free/css/all.min.css")}}' rel="stylesheet" type="text/css">
+  <link href='{{asset("server/vendor/bootstrap/css/bootstrap.min.css")}}' rel="stylesheet" type="text/css">
+  <link href='{{asset("server/css/style.min.css")}}' rel="stylesheet">
 
 </head>
 
@@ -63,8 +63,8 @@
         <div id="collapseSupplier" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">SUPPLIER</h6>
-            <router-link to="" class="collapse-item" >All Supplier</router-link>
-            <router-link to="" class="collapse-item" >Add Supplier</router-link>
+            <router-link to="/supplier" class="collapse-item" >All Supplier</router-link>
+            <router-link to="/store-supplier" class="collapse-item" >Add Supplier</router-link>
             
           </div>
         </div>

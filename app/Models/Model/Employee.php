@@ -18,4 +18,5 @@ class Employee extends Model
         'joining_date'
 
     ];
+    
 }
