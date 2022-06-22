@@ -10,7 +10,7 @@
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Add Supplier</h1>
                   </div>
-                  <form @submit.prevent="employeeInsert" enctype="multipart/form-data">
+                  <form @submit.prevent="supplierInsert" enctype="multipart/form-data">
                     <div class="form-group">
                       <label>Name</label>
                       <input type="text" class="form-control" id="exampleInputFirstName" placeholder="Enter  Name" v-model="form.name">
@@ -97,10 +97,10 @@ export default{
   
   },
   methods:{
-    employeeInsert(){
+    supplierInsert(){
       axios.post('/api/supplier',this.form)
       .then(()=>{
-        this.$router.push({name: 'supplier'})
+        this.$router.push({name: '/supplier'})
         Notification.success()
       })
       .catch(error=>this.errors=error.response.data.errors);

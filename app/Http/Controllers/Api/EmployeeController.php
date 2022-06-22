@@ -121,6 +121,7 @@ class EmployeeController extends Controller
         $data['nid']=$request->nid;
         $data['joining_date']=$request->joining_date;
         $image=$request->newphoto;
+       
         if($image){
             $position=strpos($request->photo,';');
             $sub = substr($image,0,$position);
@@ -130,7 +131,7 @@ class EmployeeController extends Controller
             $upload_path='backend/employee/';
             $img_url=$upload_path.$name;
             $success = $img->save($img_url);
-
+            
             if($success){
                 $data['photo']= $image_url;
                 $img=DB::table('employees')->where('id',$id)->first();

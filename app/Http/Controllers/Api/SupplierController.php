@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Model\Supplier;
+use Image;
+use DB;
 class SupplierController extends Controller
 {
     /**
@@ -25,7 +27,7 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -36,7 +38,40 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData=$request->validate([
+            'name'=>'required|unique:suppliers|max:255',
+            'email'=>'required',
+            'phone'=> 'required|unique:suppliers',
+            
+        ]);
+        if($request->photo ){
+            $position=strpos($request->photo,';');
+            $sub = substr($request->photo,0,$position);
+            $ext=explode('/',$sub)[1];
+            $name=time().".".$ext;
+            $img=Image::make($request->photo);//->resize(240,200)
+            $upload_path='backend/supplier/';
+            $img_url=$upload_path.$name;
+            $img->save($img_url);
+            $supplier= new Supplier;
+            $supplier->name=$request->name;
+            $supplier->email=$request->email;
+            $supplier->phone=$request->phone;
+            $supplier->address=$request->address;
+            $supplier->shopname=$request->shopname;
+            
+            $supplier->photo=$img_url;
+            $supplier->save();
+           }
+           else{
+               $supplier= new Supplier;
+            $supplier->name=$request->name;
+            $supplier->email=$request->email;
+            $supplier->phone=$request->phone;
+            $supplier->salary=$request->shopname;
+            $supplier->address=$request->address;
+            $supplier->save();
+           }
     }
 
     /**
@@ -47,7 +82,8 @@ class SupplierController extends Controller
      */
     public function show($id)
     {
-        //
+        $supplier=DB::table('suppliers')->where('id',$id)->first();
+        return response()->json($supplier);
     }
 
     /**
@@ -70,7 +106,40 @@ class SupplierController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data=array();
+        $data['name']=$request->name;
+        $data['email']=$request->email;
+        $data['address']=$request->address;
+        $data['phone']=$request->phone;
+        $data['shopname']=$request->shopname;
+       
+        $image=$request->newphoto;
+       
+        if($image){
+            $position=strpos($request->photo,';');
+            $sub = substr($image,0,$position);
+            $ext=explode('/',$sub)[1];
+            $name=time().".".$ext;
+            $img=Image::make($image);//->resize(240,200)
+            $upload_path='backend/supplier/';
+            $img_url=$upload_path.$name;
+            $success = $img->save($img_url);
+            
+            if($success){
+                $data['photo']= $image_url;
+                $img=DB::table('suppliers')->where('id',$id)->first();
+                $img_path=$img->photo;
+                $done=unlink($image_path);
+                $user=DB::table('suppliers')->where('id',$id)->update($data);
+            }
+            else{
+                $oldphoto=$request->photo;
+                $data['photo']=$oldphoto;
+                $user=DB::table('suppliers')->where('id',$id)->update($data);
+            }
+            }
+        
+
     }
 
     /**
@@ -81,6 +150,13 @@ class SupplierController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $supplier=DB::table('suppliers')->where('id',$id)->first();
+        $photo = $supplier->photo;
+        if($photo){
+            unlink($photo);
+            DB::table('suppliers')->where('id',$id)->delete();
+        }else{
+            DB::table('suppliers')->where('id',$id)->delete();
+        }
     }
 }

@@ -114,7 +114,7 @@ export default{
     let id = this.$route.params.id
     axios.get('/api/employee/' + id)
     .then(({data}) =>(this.form = data))
-    .catch(console.log('error'))
+    .catch(error=>this.errors=error.response.data.errors)
   },
   methods:{
     onFileSelected(event ){
@@ -132,12 +132,12 @@ export default{
     },
     employeeUpdate(){
      let id = this.$route.params.id
-     axios.patch('/api/employee/'+id)
+     axios.patch('/api/employee/'+id,this.form)
      .then(()=>{
         this.$router.push({name:'employee'})
         Notification.success()
      })
-     .catch(console.log('error'))
+     .catch(error=>this.errors=error.response.data.errors)
     }
   
   
